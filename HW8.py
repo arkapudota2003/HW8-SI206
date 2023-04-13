@@ -45,6 +45,12 @@ def plot_rest_categories(db):
         count = i[1]
         d[category] = count
     conn.close()
+    d = dict(sorted(d.items(), key = lambda x : x[1]))
+    plt.barh(list(d.keys()), list(d.values()))
+    plt.ylabel('Restaurant Categories')
+    plt.xlabel('Number of Restaurants')
+    plt.title('Types of Restaurant on South University Ave')
+    plt.show()
     return d
 
 def find_rest_in_building(building_num, db):
