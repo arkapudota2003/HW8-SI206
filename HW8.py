@@ -15,7 +15,19 @@ def load_rest_data(db):
     and each inner key is a dictionary, where the key:value pairs should be the category, 
     building, and rating for the restaurant.
     """
-    pass
+    conn = sqlite3.connect(db)
+    c = conn.cursor()
+    c.execute("SELECT restaurants.name, categories.category, buildings.building, restaurants.rating FROM restaurants JOIN categories ON restaurants.category_id = categories.id JOIN buildings ON restaurants.building_id = buildings.id")
+    k = c.fetchall()
+    d = {}
+    for i in k:
+        name = i[0]
+        category = i[1]
+        building = i[2]
+        rating = i[3]
+        d[name] = {"category": category, "building": building, "rating": rating}
+    conn.close()
+    return d
 
 def plot_rest_categories(db):
     """
@@ -23,7 +35,17 @@ def plot_rest_categories(db):
     restaurant categories and the values should be the number of restaurants in each category. The function should
     also create a bar chart with restaurant categories and the count of number of restaurants in each category.
     """
-    pass
+    conn = sqlite3.connect(db)
+    c = conn.cursor()
+    c.execute("SELECT categories.category, count(restaurants.category_id) FROM categories JOIN restaurants ON categories.id = restaurants.category_id GROUP BY categories.category")
+    k = c.fetchall()
+    d = {}
+    for i in k:
+        category = i[0]
+        count = i[1]
+        d[category] = count
+    conn.close()
+    return d
 
 def find_rest_in_building(building_num, db):
     '''
